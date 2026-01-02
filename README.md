@@ -29,12 +29,35 @@ Optional overrides:
 
 - `GOOGLE_PLACES_BASE_URL` (testing, proxying, or mock servers)
 
-### Getting an API key
+### Getting a Google Places API Key
 
-1) Create a Google Cloud project.
-2) Enable **Places API (New)** in the API Library.
-3) Create an API key in **APIs & Services → Credentials**.
-4) Restrict the key (HTTP referrers or IPs) and set quota/billing limits.
+1. **Create a Google Cloud Project**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Click "Select a project" → "New Project"
+   - Name it (e.g., "goplaces") and click "Create"
+
+2. **Enable the Places API (New)**
+   - Go to [APIs & Services → Library](https://console.cloud.google.com/apis/library)
+   - Search for "Places API (New)" — make sure it says **(New)**!
+   - Click "Enable"
+
+3. **Create an API Key**
+   - Go to [APIs & Services → Credentials](https://console.cloud.google.com/apis/credentials)
+   - Click "Create Credentials" → "API Key"
+   - Copy the key
+
+4. **Set the Environment Variable**
+   ```bash
+   export GOOGLE_PLACES_API_KEY="your-api-key-here"
+   ```
+   Add to your `~/.zshrc` or `~/.bashrc` to persist.
+
+5. **(Recommended) Restrict the Key**
+   - Click on the key in Credentials
+   - Under "API restrictions", select "Restrict key" → "Places API (New)"
+   - Set quota limits in [Quotas](https://console.cloud.google.com/apis/api/places.googleapis.com/quotas)
+
+> **Note**: The Places API has usage costs. Check [pricing](https://developers.google.com/maps/documentation/places/web-service/usage-and-billing) and set budget alerts!
 
 ## CLI
 
@@ -134,7 +157,7 @@ make e2e
 
 Optional env overrides:
 
-- `GOOGLE_PLACES_E2E_BASE_URL`
-- `GOOGLE_PLACES_E2E_QUERY`
-- `GOOGLE_PLACES_E2E_LANGUAGE`
-- `GOOGLE_PLACES_E2E_REGION`
+- Use a custom endpoint (proxy/mock): `GOOGLE_PLACES_E2E_BASE_URL`
+- Override the search text used in E2E: `GOOGLE_PLACES_E2E_QUERY`
+- Override language code for E2E: `GOOGLE_PLACES_E2E_LANGUAGE`
+- Override region code for E2E: `GOOGLE_PLACES_E2E_REGION`
