@@ -95,6 +95,25 @@ func TestSampleWaypointsSinglePoint(t *testing.T) {
 	}
 }
 
+func TestSampleWaypointsZeroTotal(t *testing.T) {
+	points := []LatLng{{Lat: 1, Lng: 1}, {Lat: 1, Lng: 1}}
+	waypoints := sampleWaypoints(points, 3)
+	if len(waypoints) != 1 {
+		t.Fatalf("expected 1 waypoint")
+	}
+	if waypoints[0] != points[0] {
+		t.Fatalf("unexpected waypoint: %#v", waypoints[0])
+	}
+}
+
+func TestSampleWaypointsMaxExceedsPoints(t *testing.T) {
+	points := []LatLng{{Lat: 0, Lng: 0}, {Lat: 0, Lng: 0}, {Lat: 0, Lng: 1}}
+	waypoints := sampleWaypoints(points, 5)
+	if len(waypoints) != 2 {
+		t.Fatalf("expected 2 waypoints, got %d", len(waypoints))
+	}
+}
+
 func TestPointAtDistanceBounds(t *testing.T) {
 	points := []LatLng{{Lat: 0, Lng: 0}, {Lat: 0, Lng: 2}}
 	cumulative := cumulativeDistances(points)

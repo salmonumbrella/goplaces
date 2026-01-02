@@ -306,6 +306,40 @@ func TestRunRouteHuman(t *testing.T) {
 	}
 }
 
+func TestRunRouteValidationError(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{
+		"route",
+		"coffee",
+		"--from", "A",
+		"--to", "B",
+		"--mode", "FLY",
+		"--api-key", "test-key",
+	}, &stdout, &stderr)
+
+	if exitCode != 2 {
+		t.Fatalf("expected validation error exit code 2, got %d", exitCode)
+	}
+}
+
+func TestRunRouteMissingFrom(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{
+		"route",
+		"coffee",
+		"--to", "B",
+		"--api-key", "test-key",
+	}, &stdout, &stderr)
+
+	if exitCode != 2 {
+		t.Fatalf("expected validation error exit code 2, got %d", exitCode)
+	}
+}
+
 func TestRunDetailsJSON(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/places/place-1" {
