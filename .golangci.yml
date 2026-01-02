@@ -1,3 +1,5 @@
+version: "2"
+
 run:
   timeout: 5m
   tests: true
@@ -5,27 +7,30 @@ run:
 linters:
   enable:
     - errcheck
-    - gosimple
     - govet
     - ineffassign
     - staticcheck
-    - typecheck
     - unused
     - gocritic
     - goconst
-    - gofmt
-    - gofumpt
-    - goimports
     - misspell
     - prealloc
     - revive
     - unparam
 
-linters-settings:
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+
+formatters-settings:
   gofumpt:
     extra-rules: true
   goimports:
     local-prefixes: github.com/steipete/goplaces
+
+linters-settings:
   revive:
     rules:
       - name: early-return

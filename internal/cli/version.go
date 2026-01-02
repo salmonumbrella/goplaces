@@ -6,15 +6,21 @@ import (
 	"github.com/alecthomas/kong"
 )
 
+// Version is the CLI version string.
 const Version = "0.1.0"
 
+// VersionFlag prints the version and exits.
 type VersionFlag string
 
+// Decode is a no-op for the boolean version flag.
 func (v VersionFlag) Decode(_ *kong.DecodeContext) error { return nil }
-func (v VersionFlag) IsBool() bool                       { return true }
 
+// IsBool marks the version flag as boolean.
+func (v VersionFlag) IsBool() bool { return true }
+
+// BeforeApply prints the version and exits.
 func (v VersionFlag) BeforeApply(app *kong.Kong, vars kong.Vars) error {
-	fmt.Fprintln(app.Stdout, vars["version"])
+	_, _ = fmt.Fprintln(app.Stdout, vars["version"])
 	app.Exit(0)
 	return nil
 }

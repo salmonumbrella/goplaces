@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// Root defines the CLI command tree.
 type Root struct {
 	Global  GlobalOptions `embed:""`
 	Search  SearchCmd     `cmd:"" help:"Search places by text query."`
@@ -11,6 +12,7 @@ type Root struct {
 	Resolve ResolveCmd    `cmd:"" help:"Resolve a location string to candidate places."`
 }
 
+// GlobalOptions are flags shared by all commands.
 type GlobalOptions struct {
 	APIKey  string        `help:"Google Places API key." env:"GOOGLE_PLACES_API_KEY"`
 	BaseURL string        `help:"Places API base URL." env:"GOOGLE_PLACES_BASE_URL" default:"https://places.googleapis.com/v1"`
@@ -21,6 +23,7 @@ type GlobalOptions struct {
 	Version VersionFlag   `name:"version" help:"Print version and exit."`
 }
 
+// SearchCmd runs text search queries.
 type SearchCmd struct {
 	Query      string   `arg:"" name:"query" help:"Search text."`
 	Limit      int      `help:"Max results (1-20)." default:"10"`
@@ -35,10 +38,12 @@ type SearchCmd struct {
 	RadiusM    *float64 `help:"Radius in meters for location bias."`
 }
 
+// DetailsCmd fetches place details.
 type DetailsCmd struct {
 	PlaceID string `arg:"" name:"place_id" help:"Place ID."`
 }
 
+// ResolveCmd resolves a location string into candidates.
 type ResolveCmd struct {
 	LocationText string `arg:"" name:"location" help:"Location text to resolve."`
 	Limit        int    `help:"Max results (1-10)." default:"5"`

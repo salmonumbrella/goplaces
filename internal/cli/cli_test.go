@@ -43,7 +43,7 @@ func TestRunSearchJSON(t *testing.T) {
 }
 
 func TestRunSearchHuman(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(`{"places": [{"id": "abc", "displayName": {"text": "Cafe"}}]}`))
 	}))
 	defer server.Close()
@@ -95,7 +95,7 @@ func TestRunDetailsJSON(t *testing.T) {
 }
 
 func TestRunDetailsHuman(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(`{"id": "place-2", "displayName": {"text": "Park"}}`))
 	}))
 	defer server.Close()
@@ -149,7 +149,7 @@ func TestRunResolveHuman(t *testing.T) {
 }
 
 func TestRunResolveJSON(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(`{"places": [{"id": "loc-2"}]}`))
 	}))
 	defer server.Close()

@@ -12,6 +12,7 @@ import (
 	"github.com/steipete/goplaces"
 )
 
+// App wires CLI output and API access.
 type App struct {
 	client *goplaces.Client
 	out    io.Writer
@@ -20,6 +21,7 @@ type App struct {
 	color  Color
 }
 
+// Run executes the CLI with the provided arguments.
 func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if stdout == nil {
 		stdout = os.Stdout
@@ -44,7 +46,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		kong.Vars{"version": Version},
 	)
 	if err != nil {
-		fmt.Fprintln(stderr, err)
+		_, _ = fmt.Fprintln(stderr, err)
 		return 1
 	}
 
@@ -55,10 +57,10 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if err != nil {
 		if parseErr, ok := err.(*kong.ParseError); ok {
 			_ = parseErr.Context.PrintUsage(true)
-			fmt.Fprintln(stderr, parseErr.Error())
+			_, _ = fmt.Fprintln(stderr, parseErr.Error())
 			return parseErr.ExitCode()
 		}
-		fmt.Fprintln(stderr, err)
+		_, _ = fmt.Fprintln(stderr, err)
 		return 2
 	}
 	if root.Global.JSON {
@@ -110,6 +112,7 @@ func parseWithExit(parser *kong.Kong, args []string, exitCode *int) (ctx *kong.C
 	return ctx, exited, err
 }
 
+// Run executes the search command.
 func (c *SearchCmd) Run(app *App) error {
 	request := goplaces.SearchRequest{
 		Query:     c.Query,
@@ -167,6 +170,7 @@ func (c *SearchCmd) Run(app *App) error {
 	return err
 }
 
+// Run executes the details command.
 func (c *DetailsCmd) Run(app *App) error {
 	response, err := app.client.Details(context.Background(), c.PlaceID)
 	if err != nil {
@@ -181,6 +185,7 @@ func (c *DetailsCmd) Run(app *App) error {
 	return err
 }
 
+// Run executes the resolve command.
 func (c *ResolveCmd) Run(app *App) error {
 	request := goplaces.LocationResolveRequest{
 		LocationText: c.LocationText,
@@ -215,13 +220,13 @@ func handleError(writer io.Writer, err error) int {
 	}
 	var validation goplaces.ValidationError
 	if errors.As(err, &validation) {
-		fmt.Fprintln(writer, validation.Error())
+		_, _ = fmt.Fprintln(writer, validation.Error())
 		return 2
 	}
 	if errors.Is(err, goplaces.ErrMissingAPIKey) {
-		fmt.Fprintln(writer, err.Error())
+		_, _ = fmt.Fprintln(writer, err.Error())
 		return 2
 	}
-	fmt.Fprintln(writer, err.Error())
+	_, _ = fmt.Fprintln(writer, err.Error())
 	return 1
 }

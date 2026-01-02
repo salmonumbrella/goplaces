@@ -1,3 +1,4 @@
+// Package goplaces provides a Go client for the Google Places API (New).
 package goplaces
 
 import (
@@ -12,6 +13,7 @@ import (
 	"time"
 )
 
+// DefaultBaseURL is the default endpoint for the Places API (New).
 const DefaultBaseURL = "https://places.googleapis.com/v1"
 
 const (
@@ -51,12 +53,14 @@ var enumToPriceLevel = map[string]int{
 	priceLevelVeryExp:     4,
 }
 
+// Client wraps access to the Google Places API.
 type Client struct {
 	apiKey     string
 	baseURL    string
 	httpClient *http.Client
 }
 
+// Options configures the Places client.
 type Options struct {
 	APIKey     string
 	BaseURL    string
@@ -64,6 +68,7 @@ type Options struct {
 	Timeout    time.Duration
 }
 
+// NewClient builds a client with sane defaults.
 func NewClient(opts Options) *Client {
 	baseURL := strings.TrimRight(opts.BaseURL, "/")
 	if baseURL == "" {
@@ -86,6 +91,7 @@ func NewClient(opts Options) *Client {
 	}
 }
 
+// Search performs a text search with optional filters.
 func (c *Client) Search(ctx context.Context, req SearchRequest) (SearchResponse, error) {
 	req = applySearchDefaults(req)
 	if err := validateSearchRequest(req); err != nil {
@@ -114,6 +120,7 @@ func (c *Client) Search(ctx context.Context, req SearchRequest) (SearchResponse,
 	}, nil
 }
 
+// Details fetches details for a specific place ID.
 func (c *Client) Details(ctx context.Context, placeID string) (PlaceDetails, error) {
 	placeID = strings.TrimSpace(placeID)
 	if placeID == "" {
@@ -134,6 +141,7 @@ func (c *Client) Details(ctx context.Context, placeID string) (PlaceDetails, err
 	return mapPlaceDetails(place), nil
 }
 
+// Resolve converts a free-form location string into candidate places.
 func (c *Client) Resolve(ctx context.Context, req LocationResolveRequest) (LocationResolveResponse, error) {
 	req = applyResolveDefaults(req)
 	if err := validateResolveRequest(req); err != nil {
@@ -197,7 +205,9 @@ func (c *Client) doRequest(
 	if err != nil {
 		return nil, fmt.Errorf("goplaces: request failed: %w", err)
 	}
-	defer response.Body.Close()
+	defer func() {
+		_ = response.Body.Close()
+	}()
 
 	payload, err := io.ReadAll(io.LimitReader(response.Body, 1<<20))
 	if err != nil {
