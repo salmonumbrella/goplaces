@@ -13,26 +13,11 @@ Modern Go client + CLI for the Google Places API (New). Fast for humans, tidy fo
 - Typed models, validation errors, and API error surfacing.
 - CLI with color human output + `--json` (respects `NO_COLOR`).
 
-## Install
+## Install / Run
 
-### Homebrew
-
-```bash
-brew install steipete/tap/goplaces
-```
-
-### Go
-
-```bash
-go get github.com/steipete/goplaces
-go install github.com/steipete/goplaces/cmd/goplaces@latest
-```
-
-### Source
-
-```bash
-make goplaces
-```
+- Homebrew: `brew install steipete/tap/goplaces`
+- Go: `go install github.com/steipete/goplaces/cmd/goplaces@latest`
+- Source: `make goplaces`
 
 ## Config
 

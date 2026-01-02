@@ -16,7 +16,10 @@ git tag vX.Y.Z
 git push origin vX.Y.Z
 ```
 
-GitHub Actions runs GoReleaser on tag push (`.github/workflows/release.yml`).
+GitHub Actions runs GoReleaser build on tag push (`.github/workflows/release.yml`).
+Artifacts are stored on the workflow run (no GitHub release publish).
+
+Homebrew (local tap update): see `docs/releasing-homebrew.md`.
 
 ## Notes
 
